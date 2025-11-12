@@ -23,7 +23,8 @@ class Book(models.Model):
     total_copies = fields.Integer(string='Total Copies', required=True, default=1)
     available_copies = fields.Integer(string='Available Copies', compute='_compute_available_copies', store=True)
     borrowing_record_ids = fields.One2many('library.borrowing.record', 'book_id', string='Borrowing Records')
-    image = fields.Binary(string='Book Cover')
+    image = fields.Binary(string='Book Cover', attachment=True, help="Upload book cover image")
+    image_filename = fields.Char(string='Image Filename')
     publication_year = fields.Integer(string='Publication Year')
     publisher = fields.Char(string='Publisher')
     description = fields.Text(string='Description')
@@ -60,3 +61,7 @@ class Book(models.Model):
             'domain': [('book_id', '=', self.id)],
             'context': {'default_book_id': self.id}
         }
+    
+    def has_image(self):
+        """Check if book has cover image"""
+        return bool(self.image)

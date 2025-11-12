@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <menuitem id="library_member_root_menu" name="Library Management 01" sequence="-100"/>
+    <menuitem id="library_library_member_menu" name="Members" sequence="0" parent="library_member_root_menu"
+              action="library_member_action"/>
+    <menuitem id="library_book_menu" name="Books" sequence="1" parent="library_member_root_menu"
+              action="library_book_action"/>
+    <menuitem id="library_borrowing_record_menu" name="Borrowing Records" sequence="2" parent="library_member_root_menu"
+              action="library_borrowing_record_action"/>
+    <menuitem id="library_librarian_menu" name="Librarians" sequence="3" parent="library_member_root_menu"
+              action="library_librarian_action"/>
+
+</odoo>

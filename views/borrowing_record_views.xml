@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- List view of library.borrowing.record model (start)-->
+    <record id="library_borrowing_record_list_view" model="ir.ui.view">
+        <field name="name">Library Borrowing Record List View</field>
+        <field name="model">library.borrowing.record</field>
+        <field name="arch" type="xml">
+            <list decoration-info="status == 'borrowed'" 
+                  decoration-success="status == 'returned'" 
+                  decoration-danger="status == 'overdue'">
+                <field name="sequence"/>
+                <field name="member_name"/>
+                <field name="book_title"/>
+                <field name="librarian_id"/>
+                <field name="borrow_date"/>
+                <field name="expected_return_date"/>
+                <field name="actual_return_date"/>
+                <field name="status" widget="badge"/>
+                <field name="days_overdue"/>
+                <field name="fine_amount"/>
+                <button name="action_return_book" type="object" string="Return Book" 
+                        class="btn-primary" invisible="status not in ['borrowed', 'overdue']"/>
+            </list>
+        </field>
+    </record>
+    <!-- List view of library.borrowing.record model (end)-->
+
+    <!-- Form view of library.borrowing.record model (start)-->
+    <record id="library_borrowing_record_form_view" model="ir.ui.view">
+        <field name="name">Library Borrowing Record Form View</field>
+        <field name="model">library.borrowing.record</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_return_book" string="Return Book" type="object" 
+                            class="btn-primary" invisible="status not in ['borrowed', 'overdue']"/>
+                    <button name="action_extend_due_date" string="Extend Due Date" type="object" 
+                            class="btn-secondary" invisible="status != 'borrowed'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="borrowed,returned,overdue"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="sequence" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="member_id"/>
+                            <field name="member_name"/>
+                            <field name="book_id"/>
+                            <field name="book_title"/>
+                            <field name="librarian_id"/>
+                        </group>
+                        <group>
+                            <field name="borrow_date"/>
+                            <field name="expected_return_date"/>
+                            <field name="actual_return_date" invisible="status != 'returned'"/>
+                            <field name="days_overdue" invisible="days_overdue == 0"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="fine_per_day"/>
+                            <field name="fine_amount" invisible="fine_amount == 0"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Add any notes about this borrowing record..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Form view of library.borrowing.record model (end)-->
+
+    <!-- Search view of library.borrowing.record model (start)-->
+    <record id="library_borrowing_record_search_view" model="ir.ui.view">
+        <field name="name">Library Borrowing Record Search View</field>
+        <field name="model">library.borrowing.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="sequence" string="Record Number"/>
+                <field name="member_name" string="Member"/>
+                <field name="book_title" string="Book"/>
+                
+                <filter string="Borrowed" name="borrowed" 
+                        domain="[('status', '=', 'borrowed')]"/>
+                <filter string="Returned" name="returned" 
+                        domain="[('status', '=', 'returned')]"/>
+                <filter string="Overdue" name="overdue" 
+                        domain="[('status', '=', 'overdue')]"/>
+                        
+                <separator/>
+                
+                <filter string="With Fines" name="with_fines" 
+                        domain="[('fine_amount', '>', 0)]"/>
+                <filter string="Today's Borrowings" name="today_borrowings" 
+                        domain="[('borrow_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Due Today" name="due_today" 
+                        domain="[('expected_return_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                
+                <separator/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" 
+                            context="{'group_by': 'status'}"/>
+                    <filter string="Member" name="group_by_member" 
+                            context="{'group_by': 'member_id'}"/>
+                    <filter string="Book" name="group_by_book" 
+                            context="{'group_by': 'book_id'}"/>
+                    <filter string="Borrow Date" name="group_by_borrow_date" 
+                            context="{'group_by': 'borrow_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Search view of library.borrowing.record model (end)-->
+
+    <!-- Action of library.borrowing.record model (start)-->
+    <record id="library_borrowing_record_action" model="ir.actions.act_window">
+        <field name="name">Borrowing Records</field>
+        <field name="res_model">library.borrowing.record</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="library_borrowing_record_search_view"/>
+        <field name="context">{'search_default_borrowed': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first borrowing record!
+            </p>
+            <p>
+                Track book borrowings, returns, and manage fines efficiently.
+            </p>
+        </field>
+    </record>
+    <!-- Action of library.borrowing.record model (end)-->
+
+</odoo>

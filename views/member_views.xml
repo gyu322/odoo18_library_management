@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- List view of library.member model (start)-->
+    <record id="library_member_list_view" model="ir.ui.view">
+        <field name="name">Library Member List View</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <list decoration-warning="current_borrowed >= max_borrow_limit">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="join_date"/>
+                <field name="current_borrowed"/>
+                <field name="max_borrow_limit"/>
+                <field name="member_status" widget="badge" decoration-success=" member_status == 'active'" decoration-info="member_status == 'pending'" decoration-danger="member_status =='inactive'"/>
+            </list>
+        </field>
+    </record>
+    <!-- List view of library.member model (end)-->
+
+    <!-- Form view of library.member model (start)-->
+    <record id="library_member_form_view" model="ir.ui.view">
+        <field name="name">Library Member Form View</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_new_borrowing" string="New Borrowing" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="sequence" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="join_date"/>
+                            <field name="member_status"/>
+                        </group>
+                        <group>
+                            <label for="current_borrowed" string="Borrowing Statistics"/>
+                            <div class="o_row">
+                                <field name="current_borrowed"/> / <field name="max_borrow_limit"/>
+                            </div>
+                            <field name="borrow_limit_progress" widget="progressbar"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Contact Details">
+                            <group>
+                                <group>
+                                    <field name="email"/>
+                                    <field name="phone"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Borrowing History">
+                            <field name="borrowing_ids">
+                                <list>
+                                    <field name="sequence"/>
+                                    <field name="book_title"/>
+                                    <field name="borrow_date"/>
+                                    <field name="expected_return_date"/>
+                                    <field name="actual_return_date"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="fine_amount"/>
+                                    <button name="action_return_book" type="object" string="Return" 
+                                            class="btn-primary btn-sm" invisible="status not in ['borrowed', 'overdue']"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                        <page string="Statistics">
+                            <group>
+                                <group>
+                                    <field name="total_books_borrowed"/>
+                                    <field name="total_fines"/>
+                                </group>
+                                <group>
+                                    <field name="overdue_books_count"/>
+                                    <field name="returned_books_count"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Form view of library.member model (end)-->
+
+    <!-- Search view of library.member model (start)-->
+    <record id="library_member_search_view" model="ir.ui.view">
+        <field name="name">Library Member Search View</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Name"/>
+                <field name="sequence" string="Member Number"/>
+                <field name="email" string="Email"/>
+                
+                <filter string="Active Members" name="active_members" 
+                        domain="[('member_status', '=', 'active')]"/>
+                <filter string="Members at Limit" name="members_at_limit" 
+                        domain="[('current_borrowed', '>=', max_borrow_limit)]"/>
+                <filter string="Members with Overdue Books" name="members_with_overdue" 
+                        domain="[('overdue_books_count', '>', 0)]"/>
+                
+                <separator/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Join Date" name="group_by_join_date" 
+                            context="{'group_by': 'join_date'}"/>
+                    <filter string="Member Status" name="group_by_status" 
+                            context="{'group_by': 'member_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Search view of library.member model (end)-->
+
+    <!-- Action of library.member model (start)-->
+    <record id="library_member_action" model="ir.actions.act_window">
+        <field name="name">Members</field>
+        <field name="res_model">library.member</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="library_member_search_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first library member!
+            </p>
+        </field>
+    </record>
+    <!-- Action of library.member model (end)-->
+
+</odoo>

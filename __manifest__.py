@@ -1,0 +1,22 @@
+{
+    'name': 'Library Management System',
+    'version': '1.0.0',
+    'category': 'Library',
+    'summary': 'Library Management System for tracking books and members',
+    'description': 'A comprehensive library management system for managing books, members, and borrowing records.',
+    'author': 'Your Company',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence_data.xml',
+        'data/ir_cron_data.xml',
+        'views/member_views.xml',
+        'views/book_views.xml',
+        'views/borrowing_record_views.xml',
+        'views/librarian_views.xml',
+        'views/views_menu.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

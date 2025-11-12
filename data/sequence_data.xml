@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for Library Member Numbers -->
+        <record id="seq_library_member" model="ir.sequence">
+            <field name="name">Library Member Number</field>
+            <field name="code">library.member</field>
+            <field name="prefix">LM</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Sequence for Library Borrowing Record Numbers -->
+        <record id="seq_library_borrowing_record" model="ir.sequence">
+            <field name="name">Library Borrowing Record Number</field>
+            <field name="code">library.borrowing.record</field>
+            <field name="prefix">BR</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

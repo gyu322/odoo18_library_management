@@ -17,6 +17,14 @@ class Member(models.Model):
     email = fields.Char(string='Email', required=True)
     phone = fields.Char(string='Phone Number', required=True)
     join_date = fields.Date(string='Join Date', required=True, default=fields.Date.today)
+    
+    # Address fields
+    street = fields.Char(string='Street')
+    street2 = fields.Char(string='Street 2')
+    city = fields.Char(string='City')
+    state = fields.Char(string='State/Province')
+    zip_code = fields.Char(string='Zip/Postal Code')
+    country = fields.Char(string='Country')
     max_borrow_limit = fields.Integer(string='Maximum Borrow Limit', default=5)
     current_borrowed = fields.Integer(string='Currently Borrowed', compute='_compute_current_borrowed', store=True)
     member_status = fields.Selection([

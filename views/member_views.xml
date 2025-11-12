@@ -59,6 +59,19 @@
                                     <field name="phone"/>
                                 </group>
                             </group>
+                            
+                            <group string="Address">
+                                <group>
+                                    <field name="street" placeholder="Street address"/>
+                                    <field name="street2" placeholder="Street 2"/>
+                                    <field name="city"/>
+                                </group>
+                                <group>
+                                    <field name="state" placeholder="State/Province"/>
+                                    <field name="zip_code" placeholder="Zip/Postal Code"/>
+                                    <field name="country"/>
+                                </group>
+                            </group>
                         </page>
                         
                         <page string="Borrowing History">
